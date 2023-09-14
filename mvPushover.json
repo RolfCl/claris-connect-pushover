@@ -1,0 +1,106 @@
+{
+    "schema": "1.0",
+    "name": "Pushover",
+    "description": "Send a push to your device. Custom connector from Mallverkstan 2023-09-12",
+    "requiredSettings": {
+        "authFields": [
+            {
+                "label": "API Token",
+                "key": "token",
+                "errorText": "Invalid token",
+                "masked": false
+            },
+            {
+                "label": "User key",
+                "key": "user",
+                "errorText": "Invalid user",
+                "masked": false
+            }
+        ]
+    },
+    "auth_components": {
+        "type": "none"
+    },
+    "auth_request": {
+        "type": "custom_body",
+        "body_parameters": {
+            "token": "{{authFields.token}}",
+            "user": "{{authFields.user}}"
+        }
+    },
+    "endpoints": {
+        "POST": {
+            "/send_push": {
+                "url": "https://api.pushover.net/1/messages.json"
+            }
+        }
+    },
+    "actions": [
+        {
+            "modelId": "push",
+            "actionId": "send",
+            "endpoint": "/send_push",
+            "method": "POST",
+            "label": "Send push",
+            "helpText": "Send push notification to your device",
+            "actionFields": [
+                {
+                    "key": "title",
+                    "label": "Title",
+                    "description": "",
+                    "default": "",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "key": "message",
+                    "label": "Message",
+                    "description": "",
+                    "default": "",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "key": "sound",
+                    "label": "Sound",
+                    "description": "",
+                    "default": "pushover",
+                    "required": true,
+                    "type": "choice",
+                    "choices": {
+                        "pushover": "Pushover",
+                        "bike": "Bike",
+                        "bugle": "Bugle",
+                        "cashregister": "Cash Register",
+                        "classical": "Classical",
+                        "cosmic": "Cosmic",
+                        "falling": "Falling",
+                        "gamelan": "Gamelan",
+                        "incoming": "Incoming",
+                        "intermission": "Intermission",
+                        "magic": "Magic",
+                        "mechanical": "Mechanical",
+                        "pianobar": "Piano Bar",
+                        "siren": "Siren",
+                        "spacealarm": "Space Alarm",
+                        "tugboat": "Tug Boat",
+                        "alien": "Alien Alarm (long)",
+                        "climb": "Climb (long)",
+                        "persistent": "Persistent (long)",
+                        "echo": "Pushover Echo (long)",
+                        "updown": "Up Down (long)",
+                        "vibrate": "Vibrate Only",
+                        "none": "None"
+                    }
+                }
+            ]
+        }
+    ],
+    "testConnection": {
+        "endpoint": "/send_push",
+        "method": "POST",
+        "body": {
+            "message": "Test from Claris Connect"
+        }
+    }
+}
